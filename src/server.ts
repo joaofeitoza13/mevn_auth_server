@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from 'express'
+import cookieParser from "cookie-parser"
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import cors from 'cors'
@@ -17,7 +18,7 @@ connectDB(database)
 server.use(credentials)
 server.use(cors<Request>(corsConfig))
 server.use(errorHandler)
-
+server.use(cookieParser())
 server.use(express.json())
 server.use(express.urlencoded({ extended: false }))
 
