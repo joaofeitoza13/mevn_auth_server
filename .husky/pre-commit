@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Enable colors and remove plain text log outputs
+exec >/dev/tty 2>&1
+
+# Check changed files
+npx lint-staged
