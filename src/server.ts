@@ -6,7 +6,7 @@ import cors from 'cors'
 import path from 'path'
 import { corsConfig, credentials, errorHandler } from './middleware'
 import { connectDB } from './config'
-import { router } from 'routes/api/auth'
+import { router } from './routes/api/auth'
 
 
 dotenv.config()
