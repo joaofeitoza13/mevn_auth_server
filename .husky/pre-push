@@ -4,4 +4,4 @@
 # Enable colors and remove plain text log outputs
 exec >/dev/tty 2>&1
 
-npm run test:ci
+npm run test

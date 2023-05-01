@@ -10,7 +10,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "format:staged": "prettier --write",
     "lint": "eslint \"**/*.+(ts|json)\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": ""
   },
   "keywords": [],
   "author": "",
