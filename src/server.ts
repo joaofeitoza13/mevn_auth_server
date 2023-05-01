@@ -2,8 +2,8 @@ import express, { Express, Request, Response } from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import { connectDB } from './config/database'
-import { corsConfig, credentials, errorHandler } from 'middleware'
+import { connectDB } from './config'
+import { corsConfig, credentials, errorHandler } from './middleware'
 
 dotenv.config()
 const port = process.env.PORT!
@@ -16,6 +16,9 @@ connectDB(database)
 server.use(credentials)
 server.use(cors<Request>(corsConfig))
 server.use(errorHandler)
+
+server.use(express.json())
+server.use(express.urlencoded({ extended: false }))
 
 server.get('/', (req: Request, res: Response) => {
   res.send("Typescript Express Server's root.")
