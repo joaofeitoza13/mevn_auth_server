@@ -6,6 +6,8 @@ import cors from 'cors'
 import path from 'path'
 import { corsConfig, credentials, errorHandler } from './middleware'
 import { connectDB } from './config'
+import { router } from 'routes/api/auth'
+
 
 dotenv.config()
 const port = process.env.PORT!
@@ -23,6 +25,8 @@ server.use(express.json())
 server.use(express.urlencoded({ extended: false }))
 
 server.use('/static', express.static(path.join(__dirname, 'public')))
+
+server.use('/api/auth', router)
 
 server.get('/', (req: Request, res: Response) => {
   res.send("Typescript Express Server's root.")
