@@ -1,16 +1,7 @@
-import { ObjectId, Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose'
+import { UserModel } from 'helpers/user'
 
-export interface IUser {
-  id: ObjectId
-  username: string
-  email: string
-  firstname: string
-  lastname: string
-  password: string
-  refresh_token: string
-}
-
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<UserModel>(
   {
     username: {
       type: String,
@@ -22,10 +13,7 @@ const userSchema = new Schema<IUser>(
       lowercase: true,
       trim: true,
       unique: true,
-      validate: [
-        (val: string) =>
-          /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val),
-      ],
+      validate: [(val: string) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val)],
     },
     firstname: {
       type: String,
@@ -46,7 +34,7 @@ const userSchema = new Schema<IUser>(
     virtuals: {
       full_name: {
         // ? asdsadas
-        get(this: IUser): string {
+        get(this: UserModel): string {
           return `${this.firstname} ${this.lastname}`
         },
       },
@@ -58,5 +46,5 @@ const userSchema = new Schema<IUser>(
     },
   }
 )
-//! 'users' refers to the collection of the db specified in the connection string
-export const User = model<IUser>('User', userSchema, 'users')
+
+export const User = model<UserModel>('User', userSchema, 'users')
