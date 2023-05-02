@@ -18,7 +18,7 @@ const server: Express = express()
 connectDB(database)
 
 server.use(credentials)
-server.use(cors<Request>(corsConfig))
+server.use(cors(corsConfig))
 server.use(errorHandler)
 server.use(cookieParser())
 server.use(express.json())
@@ -27,10 +27,6 @@ server.use(express.urlencoded({ extended: false }))
 server.use('/static', express.static(path.join(__dirname, 'public')))
 
 server.use('/api/auth', router)
-
-server.get('/', (req: Request, res: Response) => {
-  res.send("Typescript Express Server's root.")
-})
 
 server.all('*', (req: Request, res: Response) => {
   res.sendStatus(404)
