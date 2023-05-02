@@ -1,12 +1,12 @@
 import { CorsOptions } from 'cors'
-import { allowedOrigins } from '../config/allowed_origins'
+import { allowedOrigins } from '@/configs'
 
 export const corsConfig: CorsOptions = {
-  origin: (origin: string, callback: (error: Error | null, allow?: boolean) => any) => {
-    if (allowedOrigins.includes(origin || '') || !origin) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
+	origin: (origin: string, callback) => {
+		if (allowedOrigins.includes(origin || '') || !origin) {
+			callback(null, true)
+		} else {
+			callback(new Error('Not allowed by CORS'))
+		}
+	},
 }

@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from 'express'
 
-export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-  res.status(500).send(err.message)
+export const errorHandler = (err: Error, req: Request, res: Response) => {
+	res.status(500).send(err.message)
 }

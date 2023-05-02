@@ -1,6 +1,6 @@
 import express, { Router } from 'express'
-import { authController } from '../../controllers'
-import { authorization } from '../../middleware'
+import { authController } from '@/controllers'
+import { authorization } from '@/middleware'
 
 export const router: Router = express.Router()
 
