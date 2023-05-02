@@ -8,8 +8,9 @@ import {
   internalServerError,
   noContent,
   unauthorized,
-} from './http_responses'
-import { IUser, User } from '../models'
+} from '../helpers/http'
+import { User, UserRequest } from '../helpers/user'
+import { UserModel } from '../models'
 
 export const register = async (req: Request, res: Response) => {
   const { username, email, firstname, lastname, password, passwordConf } = req.body
@@ -23,7 +24,7 @@ export const register = async (req: Request, res: Response) => {
     const message = 'Passwords are different.'
     return badRequest(res, message)
   }
-  const userExists = await User.exists({ email }).exec()
+  const userExists = await UserModel.exists({ email }).exec()
 
   if (userExists) {
     const message = 'Email already taken.'
@@ -32,7 +33,7 @@ export const register = async (req: Request, res: Response) => {
 
   try {
     const hashedPW = await bcrypt.hash(password, 10)
-    await User.create({
+    await UserModel.create({
       email,
       username,
       password: hashedPW,
@@ -55,7 +56,7 @@ export const login = async (req: Request, res: Response) => {
     return badRequest(res, message)
   }
 
-  const user = await User.findOne({ email })
+  const user = await UserModel.findOne({ email })
   if (!user) {
     const message = 'User not found.'
     return unauthorized(res, message)
@@ -82,7 +83,6 @@ export const login = async (req: Request, res: Response) => {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     })
-    //! remove sameSite and secure for postman, as it hides the cookie
     // res.cookie('refresh_token', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000, secure: true })
     res.json({ access_token: accessToken })
   }
@@ -97,13 +97,11 @@ export const logout = async (req: Request, res: Response) => {
   }
 
   const refreshToken = cookies.refresh_token
-  const user = await User.findOne({ refresh_token: refreshToken }).exec()
+  const user = await UserModel.findOne({ refresh_token: refreshToken }).exec()
 
   if (!user) {
     //? httpOnly, sameSite and secure properties
-    //! enables cookies between cors: cross-origin resource sharing
     res.clearCookie('refresh_token', { httpOnly: true })
-    //! remove sameSite and secure for postman, as it hides the cookie
     // res.clearCookie('refresh_token', { httpOnly: true, sameSite: 'none', secure: true })
     const message = 'No user with this cookie found, cookies cleared.'
     return noContent(res, message)
@@ -115,7 +113,6 @@ export const logout = async (req: Request, res: Response) => {
   }
 
   res.clearCookie('refresh_token', { httpOnly: true })
-  //! remove sameSite and secure for postman, as it hides the cookie
   // res.clearCookie('refresh_token', { httpOnly: true, sameSite: 'none', secure: true })
   const message = 'Cookie cleared.'
   return noContent(res, message)
@@ -129,25 +126,26 @@ export const refresh = async (req: Request, res: Response) => {
   }
   const refreshToken = cookies.refresh_token
 
-  const user = await User.findOne({ refresh_token: refreshToken }).exec()
+  const user = await UserModel.findOne({ refresh_token: refreshToken }).exec()
 
   if (!user) {
     const message = 'User not found.'
     return unauthorized(res, message)
   }
 
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN, (err: Error, decoded: IUser) => {
-    if (err || user.id !== decoded.id) {
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN, (err: Error, decodedUser: User) => {
+    if (err || user.id !== decodedUser.id) {
       const message = 'User not found.'
       return unauthorized(res, message)
     }
-    const accessToken = jwt.sign({ id: decoded.id }, process.env.ACCESS_TOKEN, {
+    const accessToken = jwt.sign({ id: decodedUser.id }, process.env.ACCESS_TOKEN, {
       expiresIn: '1800s',
     })
     res.json({ access_token: accessToken })
   })
 }
 
-export const user = async (req: Request, res: Response) => {
-  res.sendStatus(200)
+export const user = async (req: UserRequest, res: Response) => {
+  const user = req.user
+  return res.status(200).json(user)
 }
