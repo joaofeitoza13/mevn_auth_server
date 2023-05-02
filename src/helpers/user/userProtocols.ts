@@ -1,7 +1,7 @@
 import { Request } from 'express'
 import { ObjectId } from 'mongoose'
 
-export interface UserModel {
+export interface User {
   id: ObjectId
   email: string
   username: string
@@ -12,6 +12,6 @@ export interface UserModel {
 }
 
 export interface UserRequest extends Request {
-  user: UserModel
+  user: User
   message?: string
 }

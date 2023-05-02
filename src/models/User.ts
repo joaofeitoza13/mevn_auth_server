@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
-import { UserModel } from 'helpers/user'
+import { User } from 'helpers/user'
 
-const userSchema = new Schema<UserModel>(
+const userSchema = new Schema<User>(
   {
     username: {
       type: String,
@@ -32,19 +32,19 @@ const userSchema = new Schema<UserModel>(
   },
   {
     virtuals: {
-      full_name: {
-        // ? asdsadas
-        get(this: UserModel): string {
-          return `${this.firstname} ${this.lastname}`
-        },
-      },
       id: {
         get() {
           return this._id
+        },
+      },
+      full_name: {
+        // ? asdsadas
+        get(this: User): string {
+          return `${this.firstname} ${this.lastname}`
         },
       },
     },
   }
 )
 
-export const User = model<UserModel>('User', userSchema, 'users')
+export const UserModel = model<User>('UserModel', userSchema, 'users')
