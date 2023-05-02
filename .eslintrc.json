@@ -13,12 +13,14 @@
     "parserOptions": {
         "project": "./tsconfig.json",
         "ecmaVersion": "latest",
-        "sourceType": "module"
+        "sourceType": "module",
+        "extraFileExtensions": [".json"]
     },
     "plugins": [
         "@typescript-eslint",
         "import"
     ],
+    "ignorePatterns": ["tsconfig.json", "package.json", ".eslintrc.json"],
     "rules": {
         "no-unused-vars": [
             "error",
@@ -29,10 +31,6 @@
         "indent": [
             "error",
             "tab"
-        ],
-        "linebreak-style": [
-            "error",
-            "windows"
         ],
         "quotes": [
             "error",

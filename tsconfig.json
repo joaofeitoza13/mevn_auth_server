@@ -3,10 +3,15 @@
     "baseUrl": "src",
     "outDir": "dist",
     "module": "commonjs",
-    "target": "es2018",
+    "target": "es6",
     "noImplicitAny": true,
     "sourceMap": true,
     "esModuleInterop": true,
+    "paths": {
+      "@/*": [
+        "*"
+      ]
+    },
   },
   "include": [
     "src/**/*.ts"
