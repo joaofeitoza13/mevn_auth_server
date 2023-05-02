@@ -1,3 +1,5 @@
 export * from './cors'
 export * from './credentials'
 export * from './error_handler'
+export * from './authentication'
+export * from './authorization'

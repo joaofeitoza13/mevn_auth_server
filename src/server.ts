@@ -1,13 +1,12 @@
 import express, { Express, Request, Response } from 'express'
-import cookieParser from "cookie-parser"
+import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import path from 'path'
-import { corsConfig, credentials, errorHandler } from './middleware'
+import { corsConfig, credentials, errorHandler, authentication } from './middleware'
 import { connectDB } from './config'
 import { router } from './routes/api/auth'
-
 
 dotenv.config()
 const port = process.env.PORT!
@@ -24,6 +23,8 @@ server.use(cookieParser())
 server.use(express.json())
 server.use(express.urlencoded({ extended: false }))
 
+server.use(authentication)
+
 server.use('/static', express.static(path.join(__dirname, 'public')))
 
 server.use('/api/auth', router)
@@ -33,7 +34,7 @@ server.all('*', (req: Request, res: Response) => {
 })
 
 mongoose.connection.once('open', () => {
-  if(database === process.env.REMOTE_DB) {
+  if (database === process.env.REMOTE_DB) {
     console.log(`Connected to MongoDB remotely.`)
   } else if (database === process.env.LOCAL_DB) {
     console.log(`Connected to MongoDB locally.`)

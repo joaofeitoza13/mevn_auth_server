@@ -1,5 +1,6 @@
-import express, { Router } from "express";
-import { authController } from "../../controllers";
+import express, { Router } from 'express'
+import { authController } from '../../controllers'
+import { authorization } from '../../middleware'
 
 export const router: Router = express.Router()
 
@@ -11,4 +12,4 @@ router.post('/logout', authController.logout)
 
 router.post('/refresh', authController.refresh)
 
-router.get('/user', authController.user)
+router.get('/user', authorization, authController.user)
