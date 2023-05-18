@@ -1,8 +1,11 @@
 {
   "name": "server",
-  "version": "1.1.0",
-  "description": "",
+  "author": "João Bisneto",
   "main": "src/server.ts",
+  "version": "1.1.0",
+  "description": "TypeScript Express REST API with Mongoose and MongoAtlas",
+  "keywords": [],
+  "license": "ISC",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.json",
     "start": "node dist/server.js",
@@ -13,9 +16,18 @@
     "prepare": "husky install",
     "test": ""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "module-alias": "^2.2.2",
+    "mongodb": "^5.3.0",
+    "mongoose": "^7.0.5",
+    "rimraf": "^5.0.0"
+  },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
@@ -35,18 +47,6 @@
     "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
     "typescript": "^5.0.4"
-  },
-  "dependencies": {
-    "bcrypt": "^5.1.0",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
-    "module-alias": "^2.2.2",
-    "mongodb": "^5.3.0",
-    "mongoose": "^7.0.5",
-    "rimraf": "^5.0.0"
   },
   "_moduleAliases": {
     "@": "dist"
